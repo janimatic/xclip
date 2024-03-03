@@ -1,0 +1,3 @@
+// the configured options and settings
+#define xclip_VERSION_MAJOR @xclip_VERSION_MAJOR@
+#define xclip_VERSION_MINOR @xclip_VERSION_MINOR@

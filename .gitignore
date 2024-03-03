@@ -1,0 +1,16 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+*.pyd
+
+# test files
+*.xcl
+
+# Generated directories
+build/
+python/build/
+python/xclip/
+
+lua/xclip/xclipLUA_wrap.cxx

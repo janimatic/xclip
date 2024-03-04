@@ -11,6 +11,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_SWIG_FLAGS "")
 set(CMAKE_SWIG_OUTDIR ${PROJECT_SOURCE_DIR}/pyxclip)
 set(SWIG_OUTFILE_DIR ${PROJECT_SOURCE_DIR}/pyxclip)
+
 set_source_files_properties(xclip.i PROPERTIES CPLUSPLUS ON)
 set_source_files_properties(xclip.i PROPERTIES USE_SWIG_DEPENDENCIES TRUE)
 set_property(SOURCE xclip.i PROPERTY SWIG_MODULE_NAME pyxclip)
@@ -30,9 +31,20 @@ target_sources( pyxclip PRIVATE
     ${xclip_SRCS} 
 )
 
-# CMAKE_BUILD_TYPE is empty... we need to hardcode the output dir...
-add_custom_command(TARGET pyxclip POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/Release/_pyxclip.pyd
-                                    ${SWIG_OUTFILE_DIR}/_pyxclip.pyd
-)
+# set_target_properties(pyxclip PROPERTIES
+                      # RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/pyxclip
+# )
+# setting RUNTIME_OUTPUT_DIRECTORY_RELEASE we should get rid of this but it doesn't work....
+if(WIN32)
+    # CMAKE_BUILD_TYPE is empty... we need to hardcode the output dir /Release under windows...
+    add_custom_command(TARGET pyxclip POST_BUILD
+        COMMAND ${CMAKE_COMMAND}  -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/Release/_pyxclip.pyd
+                                        ${SWIG_OUTFILE_DIR}/_pyxclip.pyd
+    )
+else()
+    add_custom_command(TARGET pyxclip POST_BUILD
+        COMMAND ${CMAKE_COMMAND}  -E copy_if_different ${RUNTIME_OUTPUT_DIRECTORY}/_pyxclip.pyd
+                                        ${SWIG_OUTFILE_DIR}/_pyxclip.pyd
+    )
+endif()
     

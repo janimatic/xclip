@@ -11,7 +11,7 @@
 // key type or track type ?
 static std::map<std::string, std::vector<float>> sceneAnimations;
 //bool importTrack(std::string nodeName, std::string trackName, std::map<std::string, std::vector<float>> const& keys) {
-bool importTahomaTrack(std::string nodeName, std::string trackName, std::vector<XKey*> const& keys) {
+void importTahomaTrack(std::string nodeName, std::string trackName, std::vector<XKey*> const& keys) {
     std::vector<TDoubleKeyframe> tahomaKeyframes;
     for (auto key : keys) {
         //sceneAnimations[nodeName + "." + trackName].push_back(key.second.);

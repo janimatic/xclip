@@ -37,7 +37,27 @@ target_sources( luaxclip PRIVATE
 )
 
 # CMAKE_BUILD_TYPE is empty... we need to hardcode the output dir...
+# add_custom_command(TARGET luaxclip POST_BUILD
+    # COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/Release/luaxclip.dll
+                                    # ${SWIG_OUTFILE_DIR}/luaxclip.dll
+# )
 add_custom_command(TARGET luaxclip POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/Release/luaxclip.dll
-                                    ${SWIG_OUTFILE_DIR}/luaxclip.dll
+  COMMAND ${CMAKE_COMMAND} -E echo 
+  "TARGET_FILE_DIR: $<TARGET_FILE_DIR:luaxclip>"
+)
+# if(WIN32)
+# add_custom_command(TARGET luaxclip POST_BUILD
+    # COMMAND ${CMAKE_COMMAND}  -E copy_if_different $<TARGET_FILE_DIR:luaxclip>/luaxclip.dll
+                                    # ${SWIG_OUTFILE_DIR}/luaxclip.dll
+# )
+# else()
+# add_custom_command(TARGET luaxclip POST_BUILD
+    # COMMAND ${CMAKE_COMMAND}  -E copy_if_different $<TARGET_FILE_DIR:luaxclip>/luaxclip.so
+                                    # ${SWIG_OUTFILE_DIR}/luaxclip.so
+# )
+# endif()
+# https://cmake.org/cmake/help/v3.0/manual/cmake-generator-expressions.7.html
+add_custom_command(TARGET luaxclip POST_BUILD
+    COMMAND ${CMAKE_COMMAND}  -E copy_if_different $<TARGET_FILE:luaxclip>
+                                    ${SWIG_OUTFILE_DIR}/$<TARGET_FILE_NAME:luaxclip>
 )

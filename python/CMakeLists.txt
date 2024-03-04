@@ -31,20 +31,25 @@ target_sources( pyxclip PRIVATE
     ${xclip_SRCS} 
 )
 
-# set_target_properties(pyxclip PROPERTIES
-                      # RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/pyxclip
-# )
+
 # setting RUNTIME_OUTPUT_DIRECTORY_RELEASE we should get rid of this but it doesn't work....
-if(WIN32)
-    # CMAKE_BUILD_TYPE is empty... we need to hardcode the output dir /Release under windows...
-    add_custom_command(TARGET pyxclip POST_BUILD
-        COMMAND ${CMAKE_COMMAND}  -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/Release/_pyxclip.pyd
-                                        ${SWIG_OUTFILE_DIR}/_pyxclip.pyd
-    )
-else()
-    add_custom_command(TARGET pyxclip POST_BUILD
-        COMMAND ${CMAKE_COMMAND}  -E copy_if_different ${RUNTIME_OUTPUT_DIRECTORY}/_pyxclip.pyd
-                                        ${SWIG_OUTFILE_DIR}/_pyxclip.pyd
-    )
-endif()
-    
+# https://jeremimucha.com/2021/02/cmake-variable-guidelines/
+# https://stackoverflow.com/questions/46371176/why-arent-binaries-placed-in-cmake-current-binary-dir
+# https://stackoverflow.com/questions/51353110/how-do-i-output-the-result-of-a-generator-expression-in-cmake
+# message("RUNTIME_OUTPUT_DIRECTORY_RELEASE: ${RUNTIME_OUTPUT_DIRECTORY_RELEASE}")
+# message("CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
+# message("CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
+# message("RUNTIME_OUTPUT_DIRECTORY: ${RUNTIME_OUTPUT_DIRECTORY}")
+add_custom_command(TARGET pyxclip POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E echo 
+  "TARGET_FILE_DIR: $<TARGET_FILE_DIR:pyxclip>"
+)
+# add_custom_command(TARGET pyxclip POST_BUILD
+    # COMMAND ${CMAKE_COMMAND}  -E copy_if_different $<TARGET_FILE_DIR:pyxclip>/_pyxclip.pyd
+                                    # ${SWIG_OUTFILE_DIR}/_pyxclip.pyd
+# )
+# https://cmake.org/cmake/help/v3.0/manual/cmake-generator-expressions.7.html
+add_custom_command(TARGET pyxclip POST_BUILD
+    COMMAND ${CMAKE_COMMAND}  -E copy_if_different $<TARGET_FILE:pyxclip>
+                                    ${SWIG_OUTFILE_DIR}/$<TARGET_FILE_NAME:pyxclip>
+)

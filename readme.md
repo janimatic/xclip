@@ -1,118 +1,118 @@
-XClip keyframe animation transfert
+﻿XClip keyframe animation transfert
 ==================================
 
-XClip is a tool for storing scene animations for
-interchange between graphics applications.
+XClip is a tool for storing scene animations for interchange between graphics applications.
 The goal is 
-    - to enable the editing 2d and 3d keyframe animation, 
-by keeping the original curves intact.
-    - to focus on fast and easy animation and parameters transfert
+- to allow the editing 2d and 3d keyframe animation, by keeping the original curves intact.
+- to focus on fast and easy animation and parameters transfert.
 
-* Motivation
+# Motivation
 
 There are alternative libraries to transfert animations, but...
-    - Pixar's [USD](https://github.com/PixarAnimationStudios/OpenUSD) (Universal Scene Description) 
-    bakes curve at each frame
-    - Kronos Group's [gLTF](https://github.com/KhronosGroup/glTF) (GL Transmission Format) 
-    supports bezier splines, but with limitations that makes it unmanageable for an animator
-    (tangents are always at 1/3 from neighbors keyframes). 
-    Example in Tahoma2D [gltfio] (https://github.com/janimatic/tahoma2d/blob/48c10581bdb847ef615e405b625b798c4e1b8ee0/toonz/sources/toonz/gltfio.cpp#L350) branch
-    - Autodesk's [FBX](https://www.autodesk.com/products/fbx/overview) 
-    complete 3d scene description is closed source and heavy
-    - [OCA](https://rxlaboratory.org/tools/oca/) Open Cell Animation for 2d animation's roadmap mentioned the idea of 
-    a new OKA Open Keyframe Animation json specification but it's not done.
-I don't see why cubic bezier couldn't be transfered between different applications.
-    - [Collada](https://www.khronos.org/collada/) might be an alternative
+
+- Pixar's [USD](https://github.com/PixarAnimationStudios/OpenUSD) (Universal Scene Description) bakes curve at each frame
+- Kronos Group's [gLTF](https://github.com/KhronosGroup/glTF) (GL Transmission Format) supports bezier splines, but with limitations that makes it unmanageable for an animator (tangents are always at 1/3 from neighbors keyframes). Example in  Tahoma2D [gltfio](https://github.com/janimatic/tahoma2d/blob/48c10581bdb847ef615e405b625b798c4e1b8ee0/toonz/sources/toonz/gltfio.cpp) branch
+ - Autodesk's [FBX](https://www.autodesk.com/products/fbx/overview) complete 3d scene description is closed source and heavy
+ - [OCA](https://rxlaboratory.org/tools/oca/) Open Cell Animation for 2d animation's roadmap mentioned the idea of a new [OKA](http://oca.rxlab.guide/roadmap.html#keyframe-animation) Open Keyframe Animation json specification, but it's not done.
+- [Collada](https://www.khronos.org/collada/) might be a valid alternative
     
 All those libraries tends to transfert the complete scene.
-In many case, we already have good file formats to transfert geometry
-(like usd for 3d and OCA Open Cell Animation for 2d animation)
+In many case, we already have good file formats to transfert geometry and images (like usd for 3d and OCA Open Cell Animation for 2d animation)
 Most technical directors keep writing scripts to transfert cameras, for example.
-XClip provides the transfert of parameters and animations,
-including transformations, and attributes of objects, cameras and any custom node.
+XClip provides the transfert of parameters and animations, including transformations, and attributes of objects, cameras and any custom node. I don't see why cubic bezier couldn't be transfered between different applications.
 
-* XClip c++ library
+# XCLIP
+## XClip c++ library
 
 The library supports 
-    - fast binary files i/o
-    - cubic bezier with 2d handles, linear and step (mixed) keyframes.
-    - a simple hierarchy (XClip>XNodes>XTracks>XKey)
-    - easy name remapping of nodes and parameters :
-    wildcard strings allow to deal with grouped parameters 
-    (ex: Center.X, Center.Y can be gathered with Center.\*)
-    Wildcards support single '\?' or multi '\*' character patterns
-    This allows to deal easily with different grouped parameters structures,
-    without making the library too much complicated
-    (fusion ex: Transform.Center.X, Camera3D.Transform3DOp.Translate.X...) 
-    - a user data container which can store any type of 
-    custom data that at the top level (such as start/end frames, scene scale, ...)
-    - crossplatform x64 for number data types
-    - basic math utility methods
 
-* XClip swig wrappers
+- fast binary files i/o
+- cubic bezier with 2d handles, linear and step (mixed) keyframes.
+- a simple hierarchy (XClip>XNodes>XTracks>XKey)
+- easy name remapping of nodes and parameters :
+    wildcard strings allow to deal with grouped parameters  (ex: Center.X, Center.Y can be gathered with Center.\*). Wildcards support single '\?' or multi '\*' character patterns
+    This allows to deal easily with different grouped parameters structures, without making the library too much complicated (fusion ex: Transform.Center.X, Camera3D.Transform3DOp.Translate.X...) 
+- a user data container which can store arbitrary string and number data that at the top level (such as start/end frames, scene scale, ...)
+- crossplatform x64 for number data types
+- basic math utility methods
+
+## XClip swig wrappers
 
 Lua and python wrappers are available
 It's very easy to support more languages through [SWIG](https://www.swig.org/compare.html)
 
-* Tahoma2D c++ plugin
+## Tahoma2D c++ plugin
 
-xclipio complements the open cell animation ocaio
-Both importer and exporter are working.
-TODO : A multiplier, to be defined, should be applied to point coordinates, 
-in order to match fusion coordinates.
+[xclipio](https://github.com/tahoma2d/tahoma2d/compare/master...janimatic:tahoma2d:xclipio) for [Tahoma2D](https://github.com/tahoma2d/tahoma2d) complements the [OCA](https://rxlaboratory.org/tools/oca/) Open Cell Animation ocaio
+Roadmap :
+- [x] xclip importer
+- [x] xclip exporter
+- [ ] Store a multiplier in  xclip's userdata "scale", in order to match fusion coordinates (this was hard-coded in gltfio to match blender coordinates, but should probably be defined with the dpi). 
 
 
-* Blackmagic fusion module
+## Blackmagic fusion module
 
 Thanks to the lua swig wrapper, a lua module for fusion has been made.
-The importer is working and the exporter is still being worked on.
-The actual precomp is work in progress (implying a new Multiplane fuse node)
+Roadmap :
+- [x] xclip importer parses the parameters in a recursive method, so that by default xclip could transfert absolutely everything, and only limit io with name filters/wildcards.
+- [ ] xclip exporter
+- [ ] a new Multiplane fuse node, to match the 2d camera camera and make precomp easier
 
-* contributions are welcome
+# contributions are welcome
 
 [XClip first version](https://app.assembla.com/spaces/xclip/wiki) was released in 2008
-and used on big productions at Cube.
-It was used as the base to create nice tools for 3d animators :
-Reusable 3d Animation banks/libraries, copy/paste/paste opposite tools, 
-name remapping to transfert animation clips between different characters.
-Xclip rebirth is in early stage and the design is still adjusted,
-as the integration to other applications opens new questions to solve.
+and used on big productions at Cube. It was used as the base to create nice tools for 3d animators :
+Reusable 3d Animation banks/libraries, copy/paste/paste opposite tools, name remapping to transfert animation clips between different characters.
+Xclip rebirth is in early stage and the design is still adjusted, as the integration to other applications opens new questions to solve.
 Your contribution is most welcome !
 
-* Roadmap
+# Roadmap
 
-    - Support xclipio in more open source applications (Blender, Natron, etc...)
-    - Support xclipio in more commercial applications (Maya, Nuke, etc...)
-    with the xclip python module, this should be easy enough...
-    - Add complementary tools to help scenes translations:
-        - coordinates system conversions
-        - Custom nodes that make translation easier :
-            - fusion multiplane camera node / fuse
-    - implement procedural recursive methods to parse the scenes 
-    (so that by default xclip could transfert absolutely everything)
-    and limit io with name filters
-    - add bezier curve fitting to rebuild bezier from a sampled curve
-    - add internal curve evaluation 
-    [Collada forum](https://community.khronos.org/t/animation-bezier-interpolation/5891/6) could be a good ressource
+- [ ] Support xclipio in open and close source apps with the xclip c++ library
+ 	- [x] Tahoma2D / OpenToonz
+	- [ ] Natron
 
-* my personal usage
+- [ ] Support xclipio in open and close source apps with the xclip lua module
+ 	- [x] Resolve / Fusion
+	 	- [x] importer
+	 	- [ ] exporter
+	 	- [ ] precomp
+
+- [ ] Support xclipio in open and close source apps with the xclip python module :
+	- [ ] Blender
+	- [ ] Maya
+	- [ ] Nuke
+
+- [ ] Add complementary tools to help scenes translations:
+	- [ ]  coordinates system conversions
+	- [ ]  recursive scene parsers for each
+- [ ] Create nodes that make translation easier :
+	- [ ]  fusion multiplane camera node / fuse
+- [ ] implement recursive methods to parse the scenes (so that by default xclip could transfert every parameter from every node with minimal code) and limit io with name filters
+- [ ] add internal curve evaluation 
+See
+[Collada forum](https://community.khronos.org/t/animation-bezier-interpolation/5891/6) 
+[A Primer on Bezier Curves](https://pomax.github.io/bezierinfo/) 
+[Practical Guide to Bezier Curves](https://www.gamedev.net/tutorials/programming/math-and-physics/practical-guide-to-bezier-curves-r3166/)
+- [ ] add bezier curve fitting to rebuild a cubic bezier curve from a sampled curve. See 
+[Krita Bezier curve fitting](https://github.com/KDE/krita/blob/01a4713225479b752013269df63f4ef96e605adb/libs/flake/KoCurveFit.cpp)
+[Fitting cubic Bezier curves article](https://raphlinus.github.io/curves/2021/03/11/bezier-fitting.html)
+
+# my personal usage
 
 As a traditional animation movie director, my need is to make 2d cell animation easier.
 This tool will complement OCA traditional animation transfert :
-    - OCA resolve/fusion importer https://github.com/janimatic/OCA-fusion-importer
-    - For krita ocaio is working 
-    Krita importer https://github.com/janimatic/OCA-krita-importer
-    Krita exporter https://github.com/RxLaboratory/OCA-Krita
-    But the api is too limited for now, to implement xclipio in Krita
-    (but if you have access to linux, you can contribute to the krita animation api!)
+- [OCA resolve/fusion importer](https://github.com/janimatic/OCA-fusion-importer)
+- For krita ocaio is working :
+    - [Krita importer](https://github.com/janimatic/OCA-krita-importer)
+    - [Krita exporter](https://github.com/RxLaboratory/OCA-Krita) by Duduf how defined OCA
+-  To implement xclipio in Krita, the api is too limited for now (but if you have access to linux, you can contribute to the krita animation api)...
 
 
 Supported Platforms
 -------------------
 
-XClip is primarily developed under windows 10 x64, 
-but it should build easily on macOS and linux.
-Contributors are most welcome on any platform...
+XClip is primarily developed under windows 10 x64, but it should build easily on macOS and linux. Contributors are most welcome on any platform...
 
 Getting the binary release
 --------------------------
@@ -120,19 +120,15 @@ TODO
 
 Installing the binary release
 -----------------------------
-    - Fusion module
-    Under windows, you can either run xclip/lua/install.bat, or follow this procedure : 
-        - copy manually xclip\xclip.dll and fusion\xclipioFusion.lua in 
-        %ProgramData%\Blackmagic Design\DaVinci Resolve\Fusion\Modules\Lua\
-        - copy manually exportXClip.lua and importXClip.lua in
-        %AppData%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility
+
+- Fusion lua module
+Under windows, you can run xclip/lua/install.bat 
+(which copies xclip\xclip.dll and fusion\xclipioFusion.lua in %ProgramData%\Blackmagic Design\DaVinci Resolve\Fusion\Modules\Lua\ and copies exportXClip.lua and importXClip.lua in%AppData%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Utility)
         
-    - Tahoma2D plugin
+- Tahoma2D plugin
     XClip is not yet part of the official tahoma2d master build
-    A new PR will be submited soon and that will make binaries available 
-    for windows mac and linux
-    The work in progress can be found here
-    https://github.com/tahoma2d/tahoma2d/compare/master...janimatic:tahoma2d:xclipio
+    A new PR will be submited soon and that will make binaries available for windows mac and linux
+    The work in progress can be found in the [tahoma2D xclipio branch](https://github.com/tahoma2d/tahoma2d/compare/master...janimatic:tahoma2d:xclipio)
 
 Getting and Building the Code
 -----------------------------
@@ -159,13 +155,12 @@ Getting and Building the Code
 You can download source code archives from [GitHub](https://www.github.com/janimatic/XClip) or use `git` to clone the repository.
 ```
 > git clone https://www.github.com/janimatic/XClip
-Cloning into 'OpenUSD'...
+Cloning into 'xclip'...
 ```
 
-#### 3. Run cmake
-Or CMake-gui...
+#### 3. Run cmake (or CMake-gui...)
 
-    - XClip C++ libray
+- XClip C++ libray
     browse source : xclip/src
     browse build : xclip/build (new folder)
     Configure
@@ -176,10 +171,9 @@ Or CMake-gui...
     the xclip test application located in /build/Release
     let you test the library in c++ by editing the main.cpp file
     it use a exemple header simulation Tahoma2D data types
-    For a real c++ application integration example, check xclipio in tahoma2D
-    https://github.com/tahoma2d/tahoma2d/compare/master...janimatic:tahoma2d:xclipio
+    For a real c++ application integration example, check the [tahoma2D xclipio branch](https://github.com/tahoma2d/tahoma2d/compare/master...janimatic:tahoma2d:xclipio)
     
-    - XClip python3
+- XClip python
     browse source : xclip/python
     browse build : xclip/python/build
     Configure
@@ -194,7 +188,7 @@ Or CMake-gui...
     You can test a sample python script python/xclipTool.py
     The pyd file is copied in python/xclip (SWIG_OUTFILE_DIR) by cmake.
     
-    - XClip lua
+- XClip lua
     browse source : xclip/lua
     browse build : xclip/lua/build
     Configure
@@ -210,6 +204,5 @@ Or CMake-gui...
     the lua 5.1 interpreter should be installed
     You can test a sample lua script lua/xclip/runme.lua
     The dll is copied in the same folder (SWIG_OUTFILE_DIR) by cmake.
-    This command should be adjusted if your os is not windows 
-    (to copy xclip.so instead of xclip.dll)
+    This command should be adjusted if your os is not windows (to copy .so instead of .dll)
     

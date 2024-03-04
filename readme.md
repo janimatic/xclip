@@ -69,7 +69,7 @@ Your contribution is most welcome !
 
 # Roadmap
 - [x] Fix the cmake linux workflow errors
-- [ ] Fix the cmake windows workflow errors
+- [x] Fix the cmake windows workflow errors
 
 - [ ] Support xclipio in open and close source apps with the xclip c++ library
  	- [x] Tahoma2D / OpenToonz

@@ -36,7 +36,7 @@ static void debugPrintFunction(std::string const& func, std::string const& text)
 
 class IO {
 public:
-  static void IO::write_STRING(std::fstream& file, std::string name) {
+  static void write_STRING(std::fstream& file, std::string name) {
     // To write a string, print out its length, and then the char *
     // However, X.size() is a temp, and you cannot write a temp,
     // so you need a new variable.
@@ -46,7 +46,7 @@ public:
     file.write(reinterpret_cast<char*>(&Xsize), sizeof(u64));
     file.write(name.c_str(), Xsize * sizeof(char));
   }
-  static std::string IO::read_STRING(std::fstream& file) {
+  static std::string read_STRING(std::fstream& file) {
     u64 strSize;
     file.read(reinterpret_cast<char*>(&strSize), sizeof(u64));
     // Cannot read to a string directly, must have buffer intermediate
@@ -55,29 +55,29 @@ public:
     std::string result(tmpV.begin(), tmpV.end());
     return result;
   }
-  static void IO::write_TAG(std::fstream& file, std::string const& tag) {
+  static void write_TAG(std::fstream& file, std::string const& tag) {
     write_STRING(file, tag);
   }
-  static std::string IO::read_TAG(std::fstream& file) {
+  static std::string read_TAG(std::fstream& file) {
     return read_STRING(file);
   }
-  static void IO::write_SINT(std::fstream& file, u64 size) {
+  static void write_SINT(std::fstream& file, u64 size) {
     file.write(reinterpret_cast<char*>(&size), sizeof(u64));
   }
-  static u64 IO::read_SINT(std::fstream& file) {
+  static u64 read_SINT(std::fstream& file) {
     u64 size;
     file.read(reinterpret_cast<char*>(&size), sizeof(u64));
     return size;
   }
-  static void IO::write_FLOAT(std::fstream& file, f64 val) {
+  static void write_FLOAT(std::fstream& file, f64 val) {
     file.write(reinterpret_cast<char*>(&val), sizeof(f64));
   }
-  static f64 IO::read_FLOAT(std::fstream& file) {
+  static f64 read_FLOAT(std::fstream& file) {
     f64 val;
     file.read(reinterpret_cast<char*>(&val), sizeof(f64));
     return val;
   }
-  static std::string IO::check_TAG(std::fstream& file) {
+  static std::string check_TAG(std::fstream& file) {
     auto rp            = file.tellg();
     std::string result = read_TAG(file);
     file.seekg(rp, std::ios::beg);

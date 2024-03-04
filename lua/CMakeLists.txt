@@ -7,7 +7,9 @@ include(${SWIG_USE_FILE})
 # find_package(Python3 COMPONENTS Interpreter Development)
 # https://stackoverflow.com/questions/46919807/cmake-how-to-include-and-link-lua-5-1-lib
 find_package(Lua51 REQUIRED)
-include_directories("P:/workflow/dev/lua/lua-5.1.5_Win64_dll17_lib/include" ${LUA_INCLUDE_DIR})
+
+# include_directories("P:/workflow/dev/lua/lua-5.1.5_Win64_dll17_lib/include" ${LUA_INCLUDE_DIR})
+include_directories(${LUA_INCLUDE_DIR})
 
 # FIND_PACKAGE(PythonLibs "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}" REQUIRED)
 # include_directories(${PYTHON_INCLUDE_PATH})

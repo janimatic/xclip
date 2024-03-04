@@ -11,16 +11,16 @@
 #include <math.h>
 
 struct XPoint2D {
-	f64 x = 0, y = 0;
+	f64 x, y;
 };
 
 struct XPoint3D {
-  f64 x = 0, y = 0, z = 0;
+  f64 x, y, z;
 };
 
 // https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 struct Quaternion {
-  f64 w = 0, x = 0, y = 0, z = 0;
+  f64 w, x, y, z;
 };
 
 struct EulerAngles {

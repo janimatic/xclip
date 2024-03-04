@@ -5,6 +5,10 @@ find_package(SWIG REQUIRED)
 include(${SWIG_USE_FILE})
 # find_package(PythonLibs)
 # find_package(Python3 COMPONENTS Interpreter Development)
+# add to search path to help find_package... in /xclip/lua/lua
+if(WIN32)
+list(APPEND CMAKE_PREFIX_PATH "C:/luadev")
+endif()
 # https://stackoverflow.com/questions/46919807/cmake-how-to-include-and-link-lua-5-1-lib
 find_package(Lua51 REQUIRED)
 

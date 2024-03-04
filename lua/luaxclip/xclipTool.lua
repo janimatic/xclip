@@ -4,11 +4,11 @@
 ---- importing ----
 if string.sub(_VERSION,1,7)=='Lua 5.0' then
 	-- lua5.0 doesn't have a nice way to do this
-	lib=loadlib('xclip.dll','luaopen_example') or loadlib('xclip.so','luaopen_example')
+	lib=loadlib('luaxclip.dll','luaopen_example') or loadlib('luaxclip.so','luaopen_example')
 	assert(lib)()
 else
 	-- lua 5.1 does
-	require('xclip')
+	require('luaxclip')
 end
 
 local function trackToFusionSpline(track)
@@ -73,14 +73,14 @@ local function testCase(test)
 ----- Object creation -----
     if test == 0 then
         print("Creating xclip:")
-        clip = xclip.XClip()
+        clip = luaxclip.XClip()
         root = clip.addNode(clip, "root")
         tx = root.addTrack(root, "tx")
         -- ty = root.addTrack(root, "ty")
         -- tz = root.addTrack(root, "tz")
-        key = xclip.XBezierFloatKey(0.0, 1.0, 0.1, 0.5, 0.1, 0.5)
+        key = luaxclip.XBezierFloatKey(0.0, 1.0, 0.1, 0.5, 0.1, 0.5)
         tx.addKey(tx, key)
-        -- tx.addKey(1.0, {1.0, 0.1, 0.5, 0.1, 0.5}, xclip.BEZIER)
+        -- tx.addKey(1.0, {1.0, 0.1, 0.5, 0.1, 0.5}, luaxclip.BEZIER)
         print (clip.dump(clip))
         print (trackToFusionSpline(tx))
         -- print(keys)
@@ -89,11 +89,11 @@ local function testCase(test)
         -- use a simple vector of doubles...
         -- type time value LX LY RX RY
         print("Creating xclip:")
-        clip = xclip.XClip()
+        clip = luaxclip.XClip()
         root = clip.addNode(clip, "root")
         tx = root.addTrack(root, "tx")
         local txCurve = {0.0, 2.0, 12.666667, 2.0, 0, 0}
-        txCurveV = xclip.floatVector(6)
+        txCurveV = luaxclip.floatVector(6)
         txCurveV.push_back(txCurveV, 1.0)
         txCurveV.push_back(txCurveV, 0.0)
         txCurveV.push_back(txCurveV, 2.0)
@@ -109,7 +109,7 @@ local function testCase(test)
         txCurveV.push_back(txCurveV, 2.0)
         txCurveV.push_back(txCurveV, 0.0)
         txCurveV.push_back(txCurveV, 0.0)
-        tx.addKeysFromTable(tx, txCurveV, xclip.BEZIER)
+        tx.addKeysFromTable(tx, txCurveV, luaxclip.BEZIER)
         print (clip.dump(clip))
     end
 end

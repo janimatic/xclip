@@ -1,4 +1,4 @@
-from xclip import xclip
+from pyxclip import pyxclip
 import pprint
 # import mathutils
 
@@ -44,10 +44,10 @@ def trackToBlenderSpline(track):
 def testCase(test):
     if(test == 0):
         # keys.xcl : simple example : write and read
-        clip=xclip.XClip()
+        clip=pyxclip.XClip()
         root = clip.addNode("root")
         tx = root.addTrack("tx")
-        key = xclip.XBezierFloatKey(0.0, 1.0, 0.1, 0.5, 0.1, 0.5)
+        key = pyxclip.XBezierFloatKey(0.0, 1.0, 0.1, 0.5, 0.1, 0.5)
         tx.addKey(key)
         tx.addKey([1.0, 1.0, 1.0, 0.1, 0.5, 0.1, 0.5])
         clip.updateTimeRange()
@@ -60,7 +60,7 @@ def testCase(test):
         
     elif (test == 1):
         # spline.xcl : using some spline data
-        clip=xclip.XClip()
+        clip=pyxclip.XClip()
         root = clip.addNode("root")
         tx = root.addTrack("tx")
         ty = root.addTrack("ty")
@@ -89,9 +89,9 @@ def testCase(test):
         '2.0':[0.0],
         '2.5':[2.0],
         }
-        tx.addKeys(xclip.keyMap(txCurve), xclip.BEZIER)
-        ty.addKeys(xclip.keyMap(tyCurve), xclip.LINEAR)
-        tz.addKeys(xclip.keyMap(tzCurve), xclip.STEP)
+        tx.addKeys(pyxclip.keyMap(txCurve), pyxclip.BEZIER)
+        ty.addKeys(pyxclip.keyMap(tyCurve), pyxclip.LINEAR)
+        tz.addKeys(pyxclip.keyMap(tzCurve), pyxclip.STEP)
         clip.updateTimeRange()
         filename = "spline.xcl"
         clip.write(filename)

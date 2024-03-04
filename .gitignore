@@ -4,13 +4,18 @@
 *.so
 *.dylib
 *.pyd
+*.pyc
 
 # test files
 *.xcl
 
 # Generated directories
+bin/
 build/
 python/build/
 python/xclip/
 
-lua/xclip/xclipLUA_wrap.cxx
+# SWIG generated files
+python/pyxclip/pyxclip.py
+python/pyxclip/xclipPYTHON_wrap.cxx
+lua/luaxclip/xclipLUA_wrap.cxx

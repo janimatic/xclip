@@ -5,6 +5,7 @@ XClip is a tool for storing scene animations for interchange between graphics ap
 The goal is 
 - to allow the editing 2d and 3d keyframe animation, by keeping the original curves intact.
 - to focus on fast and easy animation and parameters transfert.
+XClip is not a scene assembly tool by itself, but can help scene assembly with easy name remapping methods.
 
 # Motivation
 
@@ -127,7 +128,7 @@ Under windows, you can run xclip/lua/install.bat
         
 - Tahoma2D plugin
     XClip is not yet part of the official tahoma2d master build
-    A new PR will be submited soon and that will make binaries available for windows mac and linux
+    A new PR will be submited soon and that will make binaries available for windows, mac and linux
     The work in progress can be found in the [tahoma2D xclipio branch](https://github.com/tahoma2d/tahoma2d/compare/master...janimatic:tahoma2d:xclipio)
 
 Getting and Building the Code
@@ -158,51 +159,42 @@ You can download source code archives from [GitHub](https://www.github.com/janim
 Cloning into 'xclip'...
 ```
 
-#### 3. Run cmake (or CMake-gui...)
+#### 3. Run cmake
+    
+    Here is the procedure with CMake-gui under windows :
 
-- XClip C++ libray
-    browse source : xclip/src
-    browse build : xclip/build (new folder)
+    Browse source : /xclip
+    Browse build : /xclip/bin (That is the new folder, where the vs solution and projects will be generated)
     Configure
-    Configure
-    until there is no error
+    You can choose the default generator (vs2019 in my case) and just clic finish
+    Unless added you've added python, swig and lua to the path environment variable,
+    an error message appears :
+    Set swig include dir if necessary
+    Set Python3 include dir if necessary
+    Set LUA_INCLUDE_DIR if necessary (pointing to the include folder)
+    Set LUA_LIBRARY if necessary (pointing to the file lua5.1.lib or lua5.1.a)
+    Configure until there is no error in red
     Generate
-    build the xclip project, located in the build folder,  in Release mode
-    the xclip test application located in /build/Release
+    Open the xclip solution (xclip.sln in my case) found in /xclip/bin
+    Switch to Release mode
+    Build all the projects
+    
+    
+- XClip C++ library example application
+    the xclip test application located in /xclip/bin/Release
     let you test the library in c++ by editing the main.cpp file
-    it use a exemple header simulation Tahoma2D data types
+    it use a example header simulation Tahoma2D data types
     For a real c++ application integration example, check the [tahoma2D xclipio branch](https://github.com/tahoma2d/tahoma2d/compare/master...janimatic:tahoma2d:xclipio)
     
 - XClip python
-    browse source : xclip/python
-    browse build : xclip/python/build
-    Configure
-    Set swig include dir if necessary
-    Configure
-    Set Python3 include dir if necessary
-    Configure
-    until there is no error
-    Generate
-    build the xclip project in Release mode
-    python/build/Release/_xclip.pyd is the python binary library.
-    You can test a sample python script python/xclipTool.py
-    The pyd file is copied in python/xclip (SWIG_OUTFILE_DIR) by cmake.
+    /xclip/python/build/Release/_pyxclip.pyd is the python binary library.
+    This file is copied in /xclip/python/pyxclip (SWIG_OUTFILE_DIR) by cmake.
+    You can test a sample python script /xclip/python/xclipTool.py
     
 - XClip lua
-    browse source : xclip/lua
-    browse build : xclip/lua/build
-    Configure
-    Set swig include dir if necessary
-    Configure
-    Set LUA_INCLUDE_DIR if necessary (pointing to the include folder)
-    Set LUA_LIBRARY if necessary (pointing to the file lua5.1.lib or lua5.1.a)
-    until there is no error
-    Generate
-    build the xclip project in Release mode
-    lua/build/Release/xclip.dll / so is the lua binary library.
-    To test the lua wrapper outside of fusion
-    the lua 5.1 interpreter should be installed
-    You can test a sample lua script lua/xclip/runme.lua
+    /xclip/lua/build/Release/luaxclip.dll (or .so) is the lua binary library.
+    To test the lua wrapper outside of fusion, the lua 5.1 interpreter should be installed
+    You can test a sample lua script /xclip/lua/luaxclip/xclipTool.lua
     The dll is copied in the same folder (SWIG_OUTFILE_DIR) by cmake.
     This command should be adjusted if your os is not windows (to copy .so instead of .dll)
-    
+    See Installing the binary release if you want to use the lua module in fusion

@@ -68,7 +68,8 @@ Xclip rebirth is in early stage and the design is still adjusted, as the integra
 Your contribution is most welcome !
 
 # Roadmap
-- [ ] Fix the cmake multi-platform workflow error : Could NOT find Lua (see Github worflow at the bottom of this page
+- [x] Fix the cmake linux workflow errors
+- [ ] Fix the cmake windows workflow errors
 
 - [ ] Support xclipio in open and close source apps with the xclip c++ library
  	- [x] Tahoma2D / OpenToonz
@@ -201,11 +202,8 @@ Cloning into 'xclip'...
     See Installing the binary release if you want to use the lua module in fusion
 
 
-Github worflow
---------------
+Github worflows
+---------------
 
-Trying to fix this error in github workflow:
-
-Could NOT find Lua (missing: LUA_LIBRARIES LUA_INCLUDE_DIR) 
-
-![cmake multi-platform workflow](https://github.com/janimatic/xclip/actions/workflows/cmake-multi-platform.yml/badge.svg)
+![cmake linux workflow](https://github.com/janimatic/xclip/actions/workflows/cmake-linux-platform.yml/badge.svg)
+![cmake windows workflow](https://github.com/janimatic/xclip/actions/workflows/cmake-windows-platform.yml/badge.svg)

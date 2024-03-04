@@ -1,9 +1,9 @@
 #pragma once
 
-#include "io.h"
-
 #ifndef _MATHUTILS_H_
 #define _MATHUTILS_H_
+
+#include "io.h"
 
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES // M_PI

@@ -3,7 +3,7 @@
 #ifndef _STRINGUTILS_H_
 #define _STRINGUTILS_H_
 
-#include "IO.h"
+#include "io.h"
 
 class string_utils
 {
